@@ -44,9 +44,10 @@
                 <div class="parent">
                     <div class="div1">
                         <p style="height:fit-content"><input id="pick-file" type="file" accept="image/*" name="image" id="file"
-                                onchange="loadFile(event)""></p>                             
-                                    </div>      
-                
+                                onchange="loadFile(event)""></p>
+                        <input type="text" id="spotify-link" placeholder="Paste Spotify Song Link">
+                        <button id="fetch-cover">Fetch Cover</button>
+                    </div>
                                     <div class=" div2">
                         <h3 style="font-size: 20px;">Change border radius: </h3>
                         <input type="range" class="form-range" value="20" min="0" max="20" step="1" id="border">
@@ -72,6 +73,30 @@
 
 
         <!-- -------------------SCRIPT------------------ -->
+        <script>
+            document.getElementById("fetch-cover").addEventListener("click", function () {
+                var spotifyLink = document.getElementById("spotify-link").value;
+                var spotifyImageLink = extractSpotifyImageLink(spotifyLink);
+                if (spotifyImageLink) {
+                    document.getElementById("output").src = spotifyImageLink;
+                    document.getElementById("output").hidden = false;
+                } else {
+                    console.error("No valid image link found in the provided Spotify song link.");
+                }
+            });
+            
+            function extractSpotifyImageLink(spotifyLink) {
+                var startIndex = spotifyLink.indexOf('content="');
+                if (startIndex !== -1) {
+                    startIndex += 'content="'.length;
+                    var endIndex = spotifyLink.indexOf('"', startIndex);
+                    if (endIndex !== -1) {
+                        return spotifyLink.substring(startIndex, endIndex);
+                    }
+                }
+                return null;
+            }
+        </script>
         <script>
             document.getElementById("color-card").addEventListener("input", function () 
             {
